@@ -32,8 +32,8 @@
       <td>{{$d->username}}</td>
       <td>{{$d->email}}</td>
       <td>{{$d->mobile}}</td>
-      <td>{{$d->country}}</td>
-      <td>{{$d->city}}</td>
+      <td>{{$d->c}}</td>
+      <td>{{$d->d}}</td>
       <td>{{$d->document}}</td>
       <td>
       <a href="{{route('edit',[$d->id])}}"><button type="button" class="btn btn-primary">Edit</button></a>
