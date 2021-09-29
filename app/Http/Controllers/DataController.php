@@ -23,7 +23,11 @@ class DataController extends Controller
      */
     public function index()
     {
-        $cus = data::get();
+        $cus=DB::table('data')
+        ->join('countries', 'countries.id', '=', 'data.country')
+        ->join('cities', 'cities.id', '=', 'data.city')
+        ->select('data.*', 'countries.name as c', 'cities.name as d')
+        ->get();
         return view('new', compact('cus'));
     }
     public function search(Request $request)
