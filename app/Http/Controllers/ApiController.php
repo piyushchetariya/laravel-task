@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\device_list;
-use App\Models\fw_list;
+use App\Models\data;
 use App\Models\response;
 
 
@@ -22,7 +22,8 @@ class ApiController extends Controller
     {
         $data = data::get();
 
-        return Response::json($data);
+        return response()->json([$data]);        
+
 
     }
 
