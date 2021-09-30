@@ -135,20 +135,22 @@ class DataController extends Controller
         try {
             $data = data::where('id',$id)->first();
 
+            
+            
+            $data->username= $request['name'];
+            $data->email= $request['email'];
+            $data->mobile= $request['phone'];
             if($request->hasfile('file'))
          {
             foreach($request->file('file') as $file)
             {
                 $name = $file->getClientOriginalName();
                 $file->move(public_path().'/files/', $name);  
-                $data[] = $name;  
+                $d[] = $name; 
+                $data->document= json_encode($d);
+ 
             }
          }
-            
-            $data->username= $request['name'];
-            $data->email= $request['email'];
-            $data->mobile= $request['phone'];
-            $data->document= json_encode($data);
             $data->country= $request['country'];
             $data->city= $request['city'];
             $result = $data->save();
