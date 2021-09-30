@@ -6,8 +6,7 @@ use App\Models\data;
 use Illuminate\Http\Request;
 use App\Models\{Country, State, City};
 use Illuminate\Support\Facades\Validator;
-
-
+use DB;
 use Brian2694\Toastr\Facades\Toastr;
 
 
@@ -23,14 +22,26 @@ class DataController extends Controller
      */
     public function index()
     {
-        $cus = data::get();
+        //$cus = data::join('Country')->get();
+
+        $cus=DB::table('data')
+        ->join('countries', 'countries.id', '=', 'data.country')
+        ->join('cities', 'cities.id', '=', 'data.city')
+        ->select('data.*', 'countries.name as c', 'cities.name as d')
+        ->get();
         return view('new', compact('cus'));
     }
     public function search(Request $request)
     {
         $input = $request['filter'];
 
-       $cus = data::whaere('all_columns', 'LIKE', '%' . $input . '%')->get();
+       $cus = data::where('username', 'LIKE', '%' . $input . '%')
+       ->orWhere('email', 'LIKE', '%' . $input . '%')
+       ->orWhere('mobile', 'LIKE', '%' . $input . '%')
+       ->join('countries', 'countries.id', '=', 'data.country')
+        ->join('cities', 'cities.id', '=', 'data.city')
+        ->select('data.*', 'countries.name as c', 'cities.name as d')
+       ->get();
         return view('new', compact('cus'));
     }
 
@@ -60,25 +71,7 @@ class DataController extends Controller
             'country' => 'required',
             'city' => 'required'
         ]);
-    /*$validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
-            return redirect()->route('home')->withErrors($validator)->withInput();
-        }*/
-
         try {
-
-           /* if($request->hasfile('file'))
-         {
-            foreach($request->file('file') as $f)
-            {
-               $destinationPath = 'document/';
-                $filename=$f->getClientOriginalName();
-                $uploadSuccess = $request->file('f')->move($destinationPath, $filename);
-                $file->move(public_path('/uploads'), $filename);
-                $data[] = $filename;  
-            }
-         }*/
-
          if($request->hasfile('file'))
          {
             foreach($request->file('file') as $file)
@@ -88,10 +81,6 @@ class DataController extends Controller
                 $data[] = $name;  
             }
          }
-
-
-            
-
             $user= new data();
             $user->username= $request['name'];
             $user->email= $request['email'];
@@ -100,15 +89,9 @@ class DataController extends Controller
             $user->country= $request['country'];
             $user->city= $request['city'];
             $user->save();
-
             return redirect()->route('getuser');
-            Toastr::success('Saved successfully :)','Success');
-
-            
         }
         catch (\Exception $e) {
-            Toastr::error('not :)','error');
-
             return redirect()->back();
         }
     
@@ -134,6 +117,7 @@ class DataController extends Controller
     public function edit($id)
     {
         $data = data::find($id);
+       
         $countries = Country::get(["name", "id"]);
 
         return view('home',compact('data','countries'));
@@ -146,24 +130,32 @@ class DataController extends Controller
      * @param  \App\Models\data  $data
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
         try {
-            $class_room = data::where('id', $request->id)->first();
+            $data = data::where('id',$id)->first();
+
+            if($request->hasfile('file'))
+         {
+            foreach($request->file('file') as $file)
+            {
+                $name = $file->getClientOriginalName();
+                $file->move(public_path().'/files/', $name);  
+                $data[] = $name;  
+            }
+         }
             
-            $user->username= $request['name'];
-            $user->email= $request['email'];
-            $user->mobile= $request['phone'];
-            $user->document= $request['file'];
-            $user->country= $request['country'];
-            $user->city= $request['city'];
-            $result = $class_room->save();
-    
+            $data->username= $request['name'];
+            $data->email= $request['email'];
+            $data->mobile= $request['phone'];
+            $data->document= json_encode($data);
+            $data->country= $request['country'];
+            $data->city= $request['city'];
+            $result = $data->save();
+
             return redirect()->route('getuser');
-            
         }
-        catch (\Exception $e) {
-            Toastr::error('Operation Failed', 'Failed');
+        catch (Exception $e) {
             return redirect()->back();
         }
     }

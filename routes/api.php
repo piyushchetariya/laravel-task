@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('getuser', [App\Http\Controllers\ApiController::class, 'index'])->name('getuser');
+Route::get('delete/{id}', [App\Http\Controllers\ApiController::class, 'delete'])->name('delete');

@@ -1,6 +1,8 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css"> 
+	<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <Html>  
 <head>   
 <title>  
@@ -8,13 +10,13 @@ Registration Page
 </title>  
 </head>  
 <body>  
-<!-- 
+
 @if(isset($data))
-{{ Form::open(['class' => 'form-horizontal', 'files' => true, 'route' => array('update',$data->id), 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
+{{ Form::open(['class' => 'form-horizontal', 'files' => true, 'route' => array('updatee',$data->id), 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
 @else   
  {{ Form::open(['class' => 'form-horizontal', 'files' => true, 'route' => 'Storeuser', 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
-@endif-->
-{{ Form::open(['class' => 'form-horizontal', 'files' => true, 'route' => 'Storeuser', 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
+@endif
+<!--{{ Form::open(['class' => 'form-horizontal', 'files' => true, 'route' => 'Storeuser', 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}-->
 
         <div class="container mt-4">
             <div class="row justify-content-center">
@@ -52,7 +54,7 @@ Registration Page
 
                             <div class="form-group">
                               <label for="exampleFormControlInput1">Mobile Number :</label>
-                              <input type="text" class="form-control" id="exampleFormControlInput1" name="phone" placeholder="name@example.com" value="{{isset($data)? $data->mobile:(old('mobile')!=''? old('mobile'):'')}}">
+                              <input type="text" class="form-control" id="exampleFormControlInput1" name="phone" placeholder="1234567890" value="{{isset($data)? $data->mobile:(old('mobile')!=''? old('mobile'):'')}}">
                             </div>  
                             @error('phone')
     <div class="alert alert-danger">{{ $message }}</div>
@@ -73,7 +75,7 @@ Registration Page
                           <div class="form-group mb-3">
                             Country :
                               <select  id="country-dd" class="form-control" name="country">
-                                  <option value="">Select Country</option>
+                                  <option value="@if(isset($data)){{$data->country}}@endif">@if(isset($data)){{$data->country}}@endif</option>
                                   
                                 @foreach ($countries as $d)
                           
@@ -92,6 +94,8 @@ Registration Page
                             <div class="form-group">
                               City :
                                 <select id="city-dd" class="form-control" name="city">
+                                <option value="@if(isset($data)){{$data->city}}@endif">@if(isset($data)){{$data->city}}@endif</option>
+
 
                                 </select>
                             </div>

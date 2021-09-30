@@ -26,6 +26,14 @@ class ApiController extends Controller
 
 
     }
+    public function delete($id)
+    {
+        $data = data::find($id);
+        $data->delete();
+        $d = "Data Succesfully Deleted";
+        return response()->json([$d]);        
+
+    }
 
     /**
      * Show the form for creating a new resource.

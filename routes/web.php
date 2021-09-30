@@ -49,7 +49,7 @@ Route::post('searchuser', [App\Http\Controllers\DataController::class, 'search']
 Route::post('storeuser', [App\Http\Controllers\DataController::class, 'store'])->name('Storeuser');
 Route::get('delete/{id}', [App\Http\Controllers\DataController::class, 'delete'])->name('delete');
 Route::get('edit/{id}', [App\Http\Controllers\DataController::class, 'edit'])->name('edit');
-Route::post('update/{id}', [App\Http\Controllers\DataController::class, 'update'])->name('update');
+Route::post('update/{id}', [App\Http\Controllers\DataController::class, 'update'])->name('updatee');
 
 
 // ----------------------------- main dashboard ------------------------------//
